@@ -1,62 +1,152 @@
-# Clean Architecture Boilerplate (.NET)
+🚀 **Clean Architecture Boilerplate for .NET**
 
-Det h�r projektet �r ett boilerplate-backend byggt med Clean Architecture. 
-Syftet �r att ha en f�rdig mall man kan klona, forka och anv�nda n�r man startar nya backend-projekt.
+A professional boilerplate project built with .NET using Clean Architecture principles.
+This template is designed to be a solid foundation every time you start a new backend project.
 
-## ?? Syfte
-- Tr�na Clean Architecture-struktur
-- Tydlig separation mellan lager
-- Anv�nda Generic Repository Pattern
-- Ha ett projekt som g�r att starta direkt
-- Perfekt som skolprojekt eller framtida mall
+The goal is to save time, ensure structure, and provide a clean architectural baseline similar to how real production teams build backend systems.
 
-## ?? Projektstruktur
+You can fork, clone, and start building features immediately.
 
+🎯 **Purpose of This Boilerplate**
 
-## ?? Clean Architecture-lager
+Starting a backend project from scratch often leads to mixing concerns, unclear structure, and messy code.
+This boilerplate provides:
 
-### Domain
-- Entiteter (t.ex. `TodoItem`)
-- Interface `IGenericRepository<T>`
-- Dom�nlogik
+* A clean, production-like Clean Architecture structure
 
-### Application
-- Use cases (`CreateTodoHandler`, `GetAllTodosHandler`)
-- DTOs
-- Ingen dataaccess direkt
+* Strong separation of concerns
 
-### Infrastructure
-- FakeRepository som lagrar data i en lista
-- Ingen riktig databas (enkel och snabb att starta)
+* A Generic Repository Pattern
 
-### Api
-- Controllers
-- Anv�nder use cases via dependency injection
-- Exponerar endpoints f�r Todo
+* Zero database setup — runs instantly
 
-## ?? Starta projektet
+* A scalable foundation for future real-world projects
 
-I solution root: 
+* A personal development tool you can reuse in all .NET backend projects
+
+This is your own starter toolkit for professional backend development.
+
+🧩 **Project Structure**
+```
+Solution Root
+ ├── Api              → Web API (Controllers, Dependency Injection)
+ ├── Application      → Use Cases, DTOs, Commands, Queries
+ ├── Domain           → Entities, Interfaces, Domain Logic
+ └── Infrastructure   → Repository Implementations (in-memory)
+```
+
+🧱 Layer Overview (Clean Architecture)
+**Domain**
+
+The core of the system.
+No external dependencies.
+
+Contains:
+
+* Entities (e.g., TodoItem)
+
+*Domain logic
+
+*Interfaces such as:
+
+*IEntity
+
+*IGenericRepository<T>
+
+**Application**
+
+Contains all application-specific logic, implemented as use cases.
+
+Includes:
+
+*DTOs
+
+*Commands & Queries
+
+*Use case handlers (e.g., CreateTodoHandler, GetAllTodosHandler)
+
+*No direct data access — communicates only via Domain interfaces
+
+**Infrastructure**
+
+Implements all external concerns.
+
+This boilerplate includes:
+
+*A fake in-memory GenericRepository<T>
+
+*No database required
+
+*Easily replaceable with EF Core, SQL Server, PostgreSQL, SQLite, etc.
+
+**API**
+
+The outermost layer.
+Only responsible for:
+
+*Controllers
+
+*Routing
+
+*Dependency injection
+
+*Accepting requests and returning responses
+
+*No business logic inside controllers — all logic flows through Application → Domain → Infrastructure.
+
+🔁 **Generic Repository Pattern**
+
+This project implements a reusable and flexible repository system.
+
+Defined in Domain (IGenericRepository<T>)
+
+Implemented in Infrastructure (GenericRepository<T>)
+
+Consumed in Application via dependency injection
+
+Controllers never access data directly
+
+This pattern allows you to:
+
+✔️ Swap in a real database later
+✔️ Keep API and business logic clean
+✔️ Avoid duplication in data-access code
+✔️ Maintain high testability
+
+🚀 **Getting Started**
+
+This project requires no database.
+All data is stored in memory and resets when the API restarts.
+
+1. Build the solution
 dotnet build
+
+2. Run the API
 dotnet run --project Api
 
-Swagger �ppnas automatiskt:
+
+Swagger UI will be available at:
+
 https://localhost:<port>/swagger
 
 
-## ?? Generic Repository Pattern
+You can immediately test:
 
-- `IGenericRepository<T>` definieras i Domain
-- `GenericRepository<T>` implementeras i Infrastructure
-- API och use cases kommunicerar alltid via interface
-- Ingen direkt dataaccess i API-lagret
+POST /api/Todo
 
-## ?? Dokument
+GET /api/Todo
 
-- `README.md` ? f�rsta intrycket, hur man k�r och hur arkitekturen funkar
-- `specs.md` ? vilka features, endpoints och regler systemet har
-- `CHANGELOG.md` ? historik �ver �ndringar i projektet
+📄 Documentation Included
 
+This project includes:
 
+README.md – Overview, structure, and how to start
 
+specs.md – Functional specifications and API endpoints
+
+CHANGELOG.md – Version history
+
+These documents make the project easy to understand for new developers, future you, or teammates.
+
+🔮 Future Improv
 
