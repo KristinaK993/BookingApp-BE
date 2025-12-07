@@ -1,152 +1,27 @@
-🚀 **Clean Architecture Boilerplate for .NET**
+# Bokningssystem – Backend
 
-A professional boilerplate project built with .NET using Clean Architecture principles.
-This template is designed to be a solid foundation every time you start a new backend project.
+Detta är backend-delen av mitt bokningssystem byggt som inlämningsuppgift i kursen **Objektorienterad Programmering – Avancerad**.
 
-The goal is to save time, ensure structure, and provide a clean architectural baseline similar to how real production teams build backend systems.
+## Tech-stack
 
-You can fork, clone, and start building features immediately.
+- ASP.NET Core Web API (.NET 8)
+- Entity Framework Core + SQL Server
+- Clean-ish Architecture (API, Application, Domain, Infrastructure)
+- Enhetstester (Application.Tests)
+- GitHub Actions (build & test – kommer läggas till)
 
-🎯 **Purpose of This Boilerplate**
+## Projektstruktur
 
-Starting a backend project from scratch often leads to mixing concerns, unclear structure, and messy code.
-This boilerplate provides:
+- `API/` – Web API (controllers, DTOs, validering, auth)
+- `Application/` – tjänstelager, affärslogik
+- `CleanArchitecture.Domain/` – domänmodeller
+- `Infrastructure/` – EF Core, DbContext, databasåtkomst
+- `Application.Tests/` – enhetstester
 
-* A clean, production-like Clean Architecture structure
+## Hur man kör backend lokalt
 
-* Strong separation of concerns
-
-* A Generic Repository Pattern
-
-* Zero database setup — runs instantly
-
-* A scalable foundation for future real-world projects
-
-* A personal development tool you can reuse in all .NET backend projects
-
-This is your own starter toolkit for professional backend development.
-
-🧩 **Project Structure**
-```
-Solution Root
- ├── Api              → Web API (Controllers, Dependency Injection)
- ├── Application      → Use Cases, DTOs, Commands, Queries
- ├── Domain           → Entities, Interfaces, Domain Logic
- └── Infrastructure   → Repository Implementations (in-memory)
-```
-
-🧱 Layer Overview (Clean Architecture)
-**Domain**
-
-The core of the system.
-No external dependencies.
-
-Contains:
-
-* Entities (e.g., TodoItem)
-
-*Domain logic
-
-*Interfaces such as:
-
-*IEntity
-
-*IGenericRepository<T>
-
-**Application**
-
-Contains all application-specific logic, implemented as use cases.
-
-Includes:
-
-*DTOs
-
-*Commands & Queries
-
-*Use case handlers (e.g., CreateTodoHandler, GetAllTodosHandler)
-
-*No direct data access — communicates only via Domain interfaces
-
-**Infrastructure**
-
-Implements all external concerns.
-
-This boilerplate includes:
-
-*A fake in-memory GenericRepository<T>
-
-*No database required
-
-*Easily replaceable with EF Core, SQL Server, PostgreSQL, SQLite, etc.
-
-**API**
-
-The outermost layer.
-Only responsible for:
-
-*Controllers
-
-*Routing
-
-*Dependency injection
-
-*Accepting requests and returning responses
-
-*No business logic inside controllers — all logic flows through Application → Domain → Infrastructure.
-
-🔁 **Generic Repository Pattern**
-
-This project implements a reusable and flexible repository system.
-
-Defined in Domain (IGenericRepository<T>)
-
-Implemented in Infrastructure (GenericRepository<T>)
-
-Consumed in Application via dependency injection
-
-Controllers never access data directly
-
-This pattern allows you to:
-
-✔️ Swap in a real database later
-✔️ Keep API and business logic clean
-✔️ Avoid duplication in data-access code
-✔️ Maintain high testability
-
-🚀 **Getting Started**
-
-This project requires no database.
-All data is stored in memory and resets when the API restarts.
-
-1. Build the solution
-dotnet build
-
-2. Run the API
-dotnet run --project Api
-
-
-Swagger UI will be available at:
-
-https://localhost:<port>/swagger
-
-
-You can immediately test:
-
-POST /api/Todo
-
-GET /api/Todo
-
-## Testing
-
-This solution includes an NUnit test project:
-
-- `Application.Tests` – unit tests for the Application layer
-
-To run the tests:
-
-```bash
-dotnet test
-
-
+1. Klona repot  
+   ```bash
+   git clone https://github.com/<ditt-användarnamn>/<ditt-repo-namn>.git
 
 
