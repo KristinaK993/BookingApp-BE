@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Hämta koden
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Installera .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # 3. Restore
+      - name: Restore
+        run: dotnet restore CleanArchitectureBoilerplate.sln
+
+      # 4. Build (Release-läge)
+      - name: Build
+        run: dotnet build CleanArchitectureBoilerplate.sln --configuration Release --no-restore
+
+      # 5. Test (kör alla testprojekt)
+      - name: Test
+        run: dotnet test CleanArchitectureBoilerplate.sln --configuration Release --no-build --verbosity normal
