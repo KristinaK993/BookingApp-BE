@@ -1,7 +1,6 @@
-﻿using API.Data;
-using API.Models;
+﻿using API.Dtos.Service;
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
@@ -9,26 +8,26 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class ServicesController : ControllerBase
 {
-    private readonly AppDbContext _db;
+    private readonly IServiceManager _serviceManager;
 
-    public ServicesController(AppDbContext db)
+    public ServicesController(IServiceManager serviceManager)
     {
-        _db = db;
+        _serviceManager = serviceManager;
     }
 
     // GET: api/services
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<ActionResult<List<ServiceResponse>>> GetAll()
     {
-        var services = await _db.Services.ToListAsync();
+        var services = await _serviceManager.GetAllAsync();
         return Ok(services);
     }
 
-    // GET: api/services/{id}
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    // GET: api/services/5
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ServiceResponse>> GetById(int id)
     {
-        var service = await _db.Services.FindAsync(id);
+        var service = await _serviceManager.GetByIdAsync(id);
         if (service == null)
             return NotFound();
 
@@ -37,44 +36,40 @@ public class ServicesController : ControllerBase
 
     // POST: api/services
     [HttpPost]
-    public async Task<IActionResult> Create(Service service)
+    public async Task<ActionResult<ServiceResponse>> Create(CreateServiceDto request)
     {
-        _db.Services.Add(service);
-        await _db.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetById), new { id = service.Id }, service);
+        // validering
+        if (request.DurationMinutes <= 0)
+            return BadRequest("Duration must be greater than 0 (min).");
+
+        if (request.Price < 0)
+            return BadRequest("Price can not be negative.");
+
+        var created = await _serviceManager.CreateAsync(request);
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
-    // PUT: api/services/{id}
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, Service updated)
+    // PUT: api/services/5
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<ServiceResponse>> Update(int id, UpdateServiceDto request)
     {
-        if (id != updated.Id)
-            return BadRequest();
+        if (id != request.Id)
+            return BadRequest("Route id and body id must match.");
 
-        var service = await _db.Services.FindAsync(id);
-        if (service == null)
+        var updated = await _serviceManager.UpdateAsync(id, request);
+        if (updated == null)
             return NotFound();
 
-        service.Name = updated.Name;
-        service.Description = updated.Description;
-        service.DurationMinutes = updated.DurationMinutes;
-        service.Price = updated.Price;
-        service.CompanyId = updated.CompanyId;
-
-        await _db.SaveChangesAsync();
-        return Ok(service);
+        return Ok(updated);
     }
 
-    // DELETE: api/services/{id}
-    [HttpDelete("{id}")]
+    // DELETE: api/services/5
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var service = await _db.Services.FindAsync(id);
-        if (service == null)
+        var deleted = await _serviceManager.DeleteAsync(id);
+        if (!deleted)
             return NotFound();
-
-        _db.Services.Remove(service);
-        await _db.SaveChangesAsync();
 
         return NoContent();
     }
